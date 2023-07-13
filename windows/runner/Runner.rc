@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.wqj" "\0"
-            VALUE "FileDescription", "sd_image_generator_all" "\0"
+            VALUE "FileDescription", "推图" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "sd_image_generator_all" "\0"
+            VALUE "InternalName", "推图" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.wqj. All rights reserved." "\0"
-            VALUE "OriginalFilename", "sd_image_generator_all.exe" "\0"
-            VALUE "ProductName", "sd_image_generator_all" "\0"
+            VALUE "OriginalFilename", "推图.exe" "\0"
+            VALUE "ProductName", "推图" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
