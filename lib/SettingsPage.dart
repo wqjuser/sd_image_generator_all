@@ -20,6 +20,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isMixPrompt = false;
   bool _isSelfPositivePrompt = false;
   bool _isSelfNegativePrompt = false;
+  bool _isUseFaceStore = false;
+  bool _isHiresFix = false;
   String _selectedOption = '1.基本提示(通用)';
   List<String> _loras = ['请先获取可用Lora列表'];
   String _selectedLora = '请先获取可用Lora列表';
@@ -126,6 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _selectedModel = _models[0];
     }
   }
+
   Future<void> _getVaes(String url) async {
     try {
       Response response = await myApi.getSDVaes(url);
@@ -149,6 +152,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _selectedVae = _vaes[0];
     }
   }
+
   Future<void> _getSamplers(String url) async {
     try {
       Response response = await myApi.getSDSamplers(url);
@@ -301,12 +305,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      const Text('可用模型:'),
+                      const SizedBox(
+                          width: 70, // 设置容器的宽度
+                          child: Text('可用模型:')),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton(
                           value: _selectedModel,
-                          items: _models.map<DropdownMenuItem<String>>((String value) {
+                          items: _models
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -320,22 +327,26 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_textFieldController.text != '') {
-                            await _getModels(_textFieldController.text);
-                          } else {
-                            context.showToast(const Text('请先配置sd地址'));
-                          }
-                        },
-                        child: const Text('获取可用模型列表'),
-                      ),
+                      SizedBox(
+                          width: 200, // 设置容器的宽度
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_textFieldController.text != '') {
+                                await _getModels(_textFieldController.text);
+                              } else {
+                                context.showToast(const Text('请先配置sd地址'));
+                              }
+                            },
+                            child: const Text('获取可用模型列表'),
+                          )),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      const Text('可用Lora:'),
+                      const SizedBox(
+                          width: 70, // 设置容器的宽度
+                          child: Text('可用Lora:')),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton(
@@ -348,10 +359,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState((){
+                            setState(() {
                               if (_selectedLora != newValue) {
                                 _loraTextFieldController.text =
-                                '${_loraTextFieldController.text}<lora:$newValue:1>, ';
+                                    '${_loraTextFieldController.text}<lora:$newValue:1>, ';
                               }
                               _selectedLora = newValue!;
                             });
@@ -359,26 +370,31 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                          onPressed: () async {
-                            if (_textFieldController.text != '') {
-                              await _getLoras(_textFieldController.text);
-                            } else {
-                              context.showToast(const Text('请先配置sd地址'));
-                            }
-                          },
-                          child: const Text('获取可用Lora列表')),
+                      SizedBox(
+                          width: 200, // 设置容器的宽度
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                if (_textFieldController.text != '') {
+                                  await _getLoras(_textFieldController.text);
+                                } else {
+                                  context.showToast(const Text('请先配置sd地址'));
+                                }
+                              },
+                              child: const Text('获取可用Lora列表'))),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      const Text('可用vae:'),
+                      const SizedBox(
+                          width: 70, // 设置容器的宽度
+                          child: Text('可用vae:')),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton(
                           value: _selectedVae,
-                          items: _vaes.map<DropdownMenuItem<String>>((String value) {
+                          items: _vaes
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -392,16 +408,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_textFieldController.text != '') {
-                            await _getVaes(_textFieldController.text);
-                          } else {
-                            context.showToast(const Text('请先配置sd地址'));
-                          }
-                        },
-                        child: const Text('获取可用vae列表'),
-                      ),
+                      SizedBox(
+                          width: 200, // 设置容器的宽度
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_textFieldController.text != '') {
+                                await _getVaes(_textFieldController.text);
+                              } else {
+                                context.showToast(const Text('请先配置sd地址'));
+                              }
+                            },
+                            child: const Text('获取可用vae列表'),
+                          )),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -522,7 +540,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               labelText: '默认正面提示词，影响每一张图片',
                             ),
                           ))),
-                      const SizedBox(width: 10),
+                      Visibility(
+                        visible: _isSelfNegativePrompt & _isSelfPositivePrompt,
+                        child: const SizedBox(width: 10),
+                      ),
                       Visibility(
                           visible: _isSelfNegativePrompt,
                           child: const Expanded(
@@ -544,10 +565,58 @@ class _SettingsPageState extends State<SettingsPage> {
                                   hintText:
                                       '格式是<lora:lora的名字:lora的权重>,支持多个lora，例如 <lora:fashionGirl_v54:0.5>, <lora:cuteGirlMix4_v10:0.6>',
                                   border: OutlineInputBorder(),
-                                  labelText: '使用Lora，注意此处使用的Lora将影响所有图片，从上方可用Lora的列表中选择'))),
+                                  labelText:
+                                      '使用Lora，注意此处使用的Lora将影响所有图片，从上方可用Lora的列表中选择'))),
                     ],
                   ),
                   const SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isUseFaceStore = !_isUseFaceStore;
+                          });
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: _isUseFaceStore,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  _isUseFaceStore = newValue ?? false;
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 2),
+                            const Text('面部修复'),
+                          ]
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isHiresFix = !_isHiresFix;
+                          });
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: _isHiresFix,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  _isHiresFix = newValue ?? false;
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 2),
+                            const Text('高清修复'),
+                          ]
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ))
             ]),
