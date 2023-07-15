@@ -10,7 +10,7 @@ class MyApi extends ApiBase {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}app_id';
-    }else{
+    } else {
       url = '$url/app_id';
     }
     return get(url);
@@ -20,7 +20,7 @@ class MyApi extends ApiBase {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}sdapi/v1/loras';
-    }else{
+    } else {
       url = '$url/sdapi/v1/loras';
     }
     return get(url);
@@ -30,7 +30,7 @@ class MyApi extends ApiBase {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}sdapi/v1/sd-models';
-    }else{
+    } else {
       url = '$url/sdapi/v1/sd-models';
     }
     return get(url);
@@ -40,7 +40,7 @@ class MyApi extends ApiBase {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}sdapi/v1/sd-vae';
-    }else{
+    } else {
       url = '$url/sdapi/v1/sd-vae';
     }
     return get(url);
@@ -50,8 +50,28 @@ class MyApi extends ApiBase {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}sdapi/v1/samplers';
-    }else{
+    } else {
       url = '$url/sdapi/v1/samplers';
+    }
+    return get(url);
+  }
+
+  Future<Response> getSDUpscalers(String sdUrl) {
+    var url = sdUrl;
+    if (url.endsWith('/')) {
+      url = '${url}sdapi/v1/upscalers';
+    } else {
+      url = '$url/sdapi/v1/upscalers';
+    }
+    return get(url);
+  }
+
+  Future<Response> getSDlLatentUpscaleModes(String sdUrl) {
+    var url = sdUrl;
+    if (url.endsWith('/')) {
+      url = '${url}sdapi/v1/latent-upscale-modes';
+    } else {
+      url = '$url/sdapi/v1/latent-upscale-modes';
     }
     return get(url);
   }

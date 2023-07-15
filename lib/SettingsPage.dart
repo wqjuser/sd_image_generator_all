@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'net/MyApi.dart';
-import 'package:flash/flash.dart';
 import 'config/config.dart';
-import 'package:flutter/cupertino.dart';
+import 'utils/utils.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -31,6 +31,8 @@ class _SettingsPageState extends State<SettingsPage> {
   String _selectedVae = '请先获取可用vae列表';
   List<String> _samplers = ['Euler a'];
   String _selectedSampler = 'Euler a';
+  List<String> _upscalers = ['None'];
+  String _selectedUpscalers = 'None';
   final List<String> _options = [
     '1.基本提示(通用)',
     '2.基本提示(通用修手)',
@@ -42,6 +44,12 @@ class _SettingsPageState extends State<SettingsPage> {
   late MyApi myApi;
   late TextEditingController _textFieldController;
   late TextEditingController _loraTextFieldController;
+  late TextEditingController _hireFix1TextFieldController;
+  late TextEditingController _hireFix2TextFieldController;
+  late TextEditingController _hireFix3TextFieldController;
+  late TextEditingController _samplerTextFieldController;
+  late TextEditingController _picWidthTextFieldController;
+  late TextEditingController _picHeightTextFieldController;
   var content = '正在测试连接，请稍后点击';
 
   @override
@@ -51,6 +59,12 @@ class _SettingsPageState extends State<SettingsPage> {
     myApi = MyApi(Dio());
     _textFieldController = TextEditingController(text: _sdUrl);
     _loraTextFieldController = TextEditingController();
+    _hireFix1TextFieldController = TextEditingController(text: '5');
+    _hireFix2TextFieldController = TextEditingController(text: '0.5');
+    _hireFix3TextFieldController = TextEditingController(text: '2');
+    _samplerTextFieldController = TextEditingController(text: '20');
+    _picWidthTextFieldController = TextEditingController(text: '512');
+    _picHeightTextFieldController = TextEditingController(text: '512');
     loadSettings();
   }
 
@@ -177,6 +191,40 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  Future<void> _getUpscalers(String url) async {
+    try {
+      Response response = await myApi.getSDlLatentUpscaleModes(url);
+      if (response.statusCode == 200) {
+        _upscalers.clear();
+        for (int i = 0; i < response.data.length; i++) {
+          _upscalers.add(response.data[i]['name']);
+        }
+      } else {
+        if (kDebugMode) {
+          print('获取高清修复算法列表失败1，错误是${response.statusMessage}');
+        }
+      }
+      Response response1 = await myApi.getSDUpscalers(url);
+      if (response1.statusCode == 200) {
+        for (int i = 0; i < response1.data.length; i++) {
+          _upscalers.add(response1.data[i]['name']);
+        }
+      } else {
+        if (kDebugMode) {
+          print('获取高清修复算法列表失败3，错误是${response1.statusMessage}');
+        }
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('获取高清修复算法列表失败2，错误是$error');
+      }
+    }
+    setState(() {});
+    if (_upscalers.isNotEmpty) {
+      _selectedUpscalers = _upscalers[0];
+    }
+  }
+
   Future<void> loadSettings() async {
     Map<String, dynamic> settings = await Config.loadSettings();
     int? useMode = settings['useMode']; // 使用 int 或 dynamic 类型
@@ -189,6 +237,12 @@ class _SettingsPageState extends State<SettingsPage> {
         _selectedMode = useMode;
       }
       _textFieldController = TextEditingController(text: _sdUrl);
+      if (_sdUrl != '') {
+        _getModels(_sdUrl);
+        _getSamplers(_sdUrl);
+        _getLoras(_sdUrl);
+        _getVaes(_sdUrl);
+      }
     });
   }
 
@@ -259,7 +313,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           );
                         },
-                        child: const Text('点击测试'))
+                        child: const Text('测试连接'))
                   ]),
                   const SizedBox(height: 10),
                   Visibility(
@@ -560,7 +614,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: <Widget>[
                       Expanded(
                           child: TextField(
+                              maxLength: null,
                               controller: _loraTextFieldController,
+                              keyboardType: TextInputType.multiline,
                               decoration: const InputDecoration(
                                   hintText:
                                       '格式是<lora:lora的名字:lora的权重>,支持多个lora，例如 <lora:fashionGirl_v54:0.5>, <lora:cuteGirlMix4_v10:0.6>',
@@ -572,26 +628,94 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
+                      const Text('绘图采样算法:'),
+                      const SizedBox(width: 6),
+                      DropdownButton(
+                        value: _selectedSampler, // 设置选中值
+                        items: _samplers
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedSampler = newValue!;
+                          });
+                        },
+                      ),
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 100,
+                        child: TextField(
+                          controller: _samplerTextFieldController,
+                          decoration: const InputDecoration(
+                            labelText: '绘图迭代步数',
+                            hintText: '20',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: _picWidthTextFieldController,
+                          decoration: const InputDecoration(
+                            labelText: '绘图图片宽度(范围是64-2048)',
+                            hintText: '512',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: _picHeightTextFieldController,
+                          decoration: const InputDecoration(
+                            labelText: '绘图图片高度(范围64-2048)',
+                            hintText: '512',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
                       GestureDetector(
                         onTap: () {
                           setState(() {
                             _isUseFaceStore = !_isUseFaceStore;
                           });
                         },
-                        child: Row(
-                          children: <Widget>[
-                            Checkbox(
-                              value: _isUseFaceStore,
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  _isUseFaceStore = newValue ?? false;
-                                });
-                              },
-                            ),
-                            const SizedBox(width: 2),
-                            const Text('面部修复'),
-                          ]
-                        ),
+                        child: Row(children: <Widget>[
+                          Checkbox(
+                            value: _isUseFaceStore,
+                            onChanged: (bool? newValue) {
+                              setState(() {
+                                _isUseFaceStore = newValue ?? false;
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 2),
+                          const Text('面部修复'),
+                        ]),
                       ),
                       const SizedBox(width: 6),
                       GestureDetector(
@@ -600,21 +724,98 @@ class _SettingsPageState extends State<SettingsPage> {
                             _isHiresFix = !_isHiresFix;
                           });
                         },
-                        child: Row(
-                          children: <Widget>[
-                            Checkbox(
-                              value: _isHiresFix,
-                              onChanged: (bool? newValue) {
+                        child: Row(children: <Widget>[
+                          Checkbox(
+                            value: _isHiresFix,
+                            onChanged: (bool? newValue) {
+                              setState(() {
+                                _isHiresFix = newValue ?? false;
+                              });
+                              if (_isHiresFix) {
+                                _getUpscalers(_textFieldController.text);
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 2),
+                          const Text('高清修复'),
+                        ]),
+                      ),
+                      const SizedBox(width: 6),
+                      Visibility(
+                          visible: _isHiresFix,
+                          child: Row(children: <Widget>[
+                            const Text('高清修复算法:'),
+                            const SizedBox(width: 6),
+                            DropdownButton(
+                              value: _selectedUpscalers, // 设置选中值
+                              items: _upscalers.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
                                 setState(() {
-                                  _isHiresFix = newValue ?? false;
+                                  _selectedUpscalers = newValue!;
                                 });
                               },
                             ),
-                            const SizedBox(width: 2),
-                            const Text('高清修复'),
-                          ]
-                        ),
-                      ),
+                            const SizedBox(width: 6),
+                            SizedBox(
+                              width: 100,
+                              child: TextField(
+                                controller: _hireFix1TextFieldController,
+                                decoration: const InputDecoration(
+                                  labelText: '高清迭代步数',
+                                  hintText: '5',
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            SizedBox(
+                              width: 100,
+                              child: TextField(
+                                controller: _hireFix2TextFieldController,
+                                decoration: const InputDecoration(
+                                  labelText: '高清重绘幅度',
+                                  hintText: '0.5',
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  DecimalTextInputFormatter(
+                                      decimalRange: 2,
+                                      minValue: 0,
+                                      maxValue: 1),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            SizedBox(
+                              width: 100,
+                              child: TextField(
+                                controller: _hireFix3TextFieldController,
+                                decoration: const InputDecoration(
+                                  labelText: '高清放大倍数',
+                                  hintText: '2',
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  DecimalTextInputFormatter(
+                                      decimalRange: 2,
+                                      minValue: 1,
+                                      maxValue: 4),
+                                ],
+                              ),
+                            ),
+                          ]))
                     ],
                   )
                 ],
