@@ -16,6 +16,8 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   int _selectedMode = 1; // 修改为 int 类型
+  int _chatgptSelectedMode = 0; // 修改为 int 类型
+  int _voiceSelectedMode = 0; // 修改为 int 类型
   String _sdUrl = '';
   bool _isMixPrompt = false;
   bool _isSelfPositivePrompt = false;
@@ -31,8 +33,8 @@ class _SettingsPageState extends State<SettingsPage> {
   String _selectedVae = '请先获取可用vae列表';
   List<String> _samplers = ['Euler a'];
   String _selectedSampler = 'Euler a';
-  List<String> _upscalers = ['None'];
-  String _selectedUpscalers = 'None';
+  List<String> _upscalers = ['Latent'];
+  String _selectedUpscalers = 'Latent';
   final List<String> _options = [
     '1.基本提示(通用)',
     '2.基本提示(通用修手)',
@@ -44,6 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late MyApi myApi;
   late TextEditingController _textFieldController;
   late TextEditingController _loraTextFieldController;
+  late TextEditingController _imageSavePathTextFieldController;
   late TextEditingController _hireFix1TextFieldController;
   late TextEditingController _hireFix2TextFieldController;
   late TextEditingController _hireFix3TextFieldController;
@@ -65,6 +68,8 @@ class _SettingsPageState extends State<SettingsPage> {
     _samplerTextFieldController = TextEditingController(text: '20');
     _picWidthTextFieldController = TextEditingController(text: '512');
     _picHeightTextFieldController = TextEditingController(text: '512');
+    _imageSavePathTextFieldController =
+        TextEditingController(text: 'C:/Users/Administrator/Pictures/');
     loadSettings();
   }
 
@@ -238,10 +243,16 @@ class _SettingsPageState extends State<SettingsPage> {
       }
       _textFieldController = TextEditingController(text: _sdUrl);
       if (_sdUrl != '') {
+        //获取可用的sd模型
         _getModels(_sdUrl);
+        //获取可用的sd采样方法
         _getSamplers(_sdUrl);
+        //获取可用的lora
         _getLoras(_sdUrl);
+        //获取可用的vae
         _getVaes(_sdUrl);
+        //获取可用的放大算法
+        _getUpscalers(_sdUrl);
       }
     });
   }
@@ -258,21 +269,41 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
                   child: ListView(
                 children: <Widget>[
+                  const Text(
+                    'Stable Diffusion 相关设置:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 1,
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Row(children: <Widget>[
                     Expanded(
                       child: TextField(
                         controller: _textFieldController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: '请输入sd的地址，一般要有端口号',
+                          labelText: 'SD的地址，一般要有端口号',
                         ),
                       ),
                     ),
@@ -596,7 +627,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ))),
                       Visibility(
                         visible: _isSelfNegativePrompt & _isSelfPositivePrompt,
-                        child: const SizedBox(width: 10),
+                        child: const SizedBox(width: 6),
                       ),
                       Visibility(
                           visible: _isSelfNegativePrompt,
@@ -815,13 +846,495 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ],
                               ),
                             ),
-                          ]))
+                          ])),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _imageSavePathTextFieldController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '图片默认保存根目录',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // TODO 这里添加新的功能视图
+                  const SizedBox(height: 16),
+                  const Text(
+                    'ChatGPT 相关设置:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 1,
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Visibility(
+                    visible: true,
+                    child: Row(
+                      children: <Widget>[
+                        const Text('使用模式：'),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('api'),
+                            value: 0,
+                            groupValue: _chatgptSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _chatgptSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('web'),
+                            value: 1,
+                            groupValue: _chatgptSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _chatgptSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  //chatgpt api-key
+                  Visibility(
+                    visible: _chatgptSelectedMode == 0,
+                    child: Row(
+                      children: <Widget>[
+                        const Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'sk-xxxxxxxxxxxx',
+                              labelText: 'ChatGPT的API-KEY',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        ElevatedButton(
+                            onPressed: () async {
+                              Map<String, dynamic> settings = {
+                                'sdUrl': _textFieldController.text,
+                              };
+                              await Config.saveSettings(settings);
+                              await _testConnection(_textFieldController.text);
+                              // ignore: use_build_context_synchronously
+                              context.showFlash(
+                                barrierColor: Colors.black54,
+                                barrierDismissible: true,
+                                builder: (context, controller) =>
+                                    FadeTransition(
+                                  opacity: controller.controller,
+                                  child: AlertDialog(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                      side: BorderSide(),
+                                    ),
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 24.0,
+                                        top: 16.0,
+                                        right: 24.0,
+                                        bottom: 16.0),
+                                    title: const Text('测试结果'),
+                                    content: Text(content),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: controller.dismiss,
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text('测试连接')),
+                      ],
+                    ),
+                  ),
+                  //chatgpt key pwd
+                  Visibility(
+                    visible: _chatgptSelectedMode == 1,
+                    child: Row(
+                      children: <Widget>[
+                        const Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'xxxxxx@xxxx.com',
+                              labelText: 'ChatGPT的账号',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'xxxxxxxxxxxx',
+                              labelText: 'ChatGPT的密码',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        ElevatedButton(
+                            onPressed: () async {
+                              Map<String, dynamic> settings = {
+                                'sdUrl': _textFieldController.text,
+                              };
+                              await Config.saveSettings(settings);
+                              await _testConnection(_textFieldController.text);
+                              // ignore: use_build_context_synchronously
+                              context.showFlash(
+                                barrierColor: Colors.black54,
+                                barrierDismissible: true,
+                                builder: (context, controller) =>
+                                    FadeTransition(
+                                  opacity: controller.controller,
+                                  child: AlertDialog(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                      side: BorderSide(),
+                                    ),
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 24.0,
+                                        top: 16.0,
+                                        right: 24.0,
+                                        bottom: 16.0),
+                                    title: const Text('测试结果'),
+                                    content: Text(content),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: controller.dismiss,
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text('测试连接')),
+                      ],
+                    ),
+                  ),
+                  //百度翻译设置视图
+                  const SizedBox(height: 16),
+                  const Text(
+                    '百度翻译 相关设置:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 1,
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '百度翻译的APPID',
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '百度翻译的KEY',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'DEEPL翻译 相关设置:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 1,
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'DEEPL翻译的API_KEY',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //语音相关配置视图
+                  const SizedBox(height: 16),
+                  const Text(
+                    '语音 相关设置:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 1,
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: true,
+                    child: Row(
+                      children: <Widget>[
+                        const Text('语音引擎：'),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('百度语音'),
+                            value: 0,
+                            groupValue: _voiceSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _voiceSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('阿里语音'),
+                            value: 1,
+                            groupValue: _voiceSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _voiceSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('华为语音'),
+                            value: 2,
+                            groupValue: _voiceSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _voiceSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: const Text('微软语音'),
+                            value: 3,
+                            groupValue: _voiceSelectedMode,
+                            onChanged: (value) async {
+                              Map<String, dynamic> settings = {
+                                'useMode': value!,
+                              };
+                              await Config.saveSettings(settings);
+                              setState(() {
+                                _voiceSelectedMode = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Visibility(
+                    visible: _voiceSelectedMode == 0,
+                    child: const Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '百度语音的API_KEY',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '百度语音的SECRET_KEY',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '百度语音的APP_ID',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: _voiceSelectedMode == 1,
+                    child: const Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '阿里语音的API_KEY',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '阿里语音的SECRET_KEY',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '阿里语音的APP_ID',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: _voiceSelectedMode == 2,
+                    child: const Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '华为语音的AK',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '华为语音的SK',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: _voiceSelectedMode == 3,
+                    child: const Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: '微软语音的SPEECH_KEY',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16), //页面底部距离，在这个上面添加需要的视图
                 ],
               ))
             ]),
-      ),
+      )),
     );
   }
 }

@@ -1,7 +1,36 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'SettingsPage.dart';
 
-void main() {
+// void main() {
+//   runApp(const MyApp());
+// }
+Future<void> main() async {
+
+  //如果size是0，则设置回调，在回调中runApp
+  if(window.physicalSize.isEmpty){
+    print("window size is zero");
+    window.onMetricsChanged = (){
+      //在回调中，size仍然有可能是0
+      if(!window.physicalSize.isEmpty){
+        window.onMetricsChanged = null;
+        print("window onMetricsChanged,run app");
+        runMyApp();
+      }
+    };
+  } else{
+    //如果size非0，则直接runApp
+    print("window load success,run app");
+    runMyApp();
+  }
+}
+
+void runMyApp() async{
+
+  print("window:  ${window.physicalSize.width}  ${window.physicalSize.height}");
+  //需确保加载完成，才runApp
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,12 +40,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '推图',
+      title: 'SDImageGenerator',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: '推图'),
+      home: const MyHomePage(title: 'SDImageGenerator'),
     );
   }
 }
