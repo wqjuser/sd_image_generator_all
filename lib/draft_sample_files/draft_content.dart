@@ -1,4 +1,4 @@
-{
+const Map<String, dynamic> draftContent ={
   "canvas_config": {
     "height": 1440,
     "ratio": "original",
@@ -139,4 +139,4 @@
   "tracks": [],
   "update_time": 0,
   "version": 360000
-}
+};

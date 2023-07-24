@@ -55,7 +55,7 @@ class MyApi extends ApiBase {
     }
     return get(url);
   }
-
+  // 获取高清修复算法
   Future<Response> getSDUpscalers(String sdUrl) {
     var url = sdUrl;
     if (url.endsWith('/')) {
@@ -65,7 +65,7 @@ class MyApi extends ApiBase {
     }
     return get(url);
   }
-
+  // 获取高清修复latent-upscale算法
   Future<Response> getSDlLatentUpscaleModes(String sdUrl) {
     var url = sdUrl;
     if (url.endsWith('/')) {
@@ -74,5 +74,16 @@ class MyApi extends ApiBase {
       url = '$url/sdapi/v1/latent-upscale-modes';
     }
     return get(url);
+  }
+  // 图生图接口
+  Future<Response> sdText2Image(
+      String sdUrl, Map<String, dynamic> requestBody) {
+    var url = sdUrl;
+    if (url.endsWith('/')) {
+      url = '${url}sdapi/v1/txt2img';
+    } else {
+      url = '$url/sdapi/v1/txt2img';
+    }
+    return post(url, requestBody);
   }
 }

@@ -1,4 +1,4 @@
-{
+const Map<String, dynamic> voiceParams = {
   "baidu": {
     "voice_role": [
       "度小美(普通)",
@@ -13,33 +13,9 @@
       "度米朵(精品)",
       "度小娇(精品)"
     ],
-    "role_number": [
-      0,
-      1,
-      3,
-      4,
-      5003,
-      5118,
-      106,
-      110,
-      111,
-      103,
-      5
-    ],
-    "aue": [
-      "wav",
-      "mp3",
-      "mp3-16k",
-      "mp3-48k",
-      "pcm-16k",
-      "pcm-8k"
-    ],
-    "aue_num": [
-      3,
-      4,
-      5,
-      6
-    ],
+    "role_number": [0, 1, 3, 4, 5003, 5118, 106, 110, 111, 103, 5],
+    "aue": ["wav", "mp3", "mp3-16k", "mp3-48k", "pcm-16k", "pcm-8k"],
+    "aue_num": [3, 4, 5, 6],
     "audition_url": "https://cloud.baidu.com/product/speech/tts_online",
     "short_voice_url": "https://tsn.baidu.com/text2audio",
     "long_voice_create_url": "https://aip.baidubce.com/rpc/2.0/tts/v1/create",
@@ -315,51 +291,16 @@
         "小说",
         "直播"
       ],
-      "zhimi_emo_zh": [
-        "中性",
-        "开心",
-        "生气",
-        "悲伤",
-        "害怕",
-        "憎恨",
-        "惊讶"
-      ],
-      "zhiyan_emo_zh": [
-        "中性",
-        "开心",
-        "生气",
-        "悲伤",
-        "害怕",
-        "憎恨",
-        "惊讶",
-        "激动"
-      ],
-      "zhibei_emo_zh": [
-        "中性",
-        "开心",
-        "生气",
-        "悲伤",
-        "害怕",
-        "憎恨",
-        "惊讶"
-      ],
-      "zhitian_emo_zh": [
-        "中性",
-        "开心",
-        "生气",
-        "悲伤",
-        "害怕",
-        "憎恨",
-        "惊讶"
-      ]
+      "zhimi_emo_zh": ["中性", "开心", "生气", "悲伤", "害怕", "憎恨", "惊讶"],
+      "zhiyan_emo_zh": ["中性", "开心", "生气", "悲伤", "害怕", "憎恨", "惊讶", "激动"],
+      "zhibei_emo_zh": ["中性", "开心", "生气", "悲伤", "害怕", "憎恨", "惊讶"],
+      "zhitian_emo_zh": ["中性", "开心", "生气", "悲伤", "害怕", "憎恨", "惊讶"]
     },
-    "aue": [
-      "wav",
-      "mp3",
-      "pcm"
-    ],
-    "short_voice_url": "https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/tts",
-    "long_voice_url": "https://nls-gateway.cn-shanghai.aliyuncs.com/rest/v1/tts/async"
+    "aue": ["wav", "mp3", "pcm"],
+    "short_voice_url":
+        "https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/tts",
+    "long_voice_url":
+        "https://nls-gateway.cn-shanghai.aliyuncs.com/rest/v1/tts/async"
   },
   "huawei": {
     "voice_role": [
@@ -436,21 +377,16 @@
       "english_alvin_common",
       "english_amy_common"
     ],
-    "aue": [
-      "wav",
-      "mp3",
-      "pcm"
-    ],
-    "tts_url": "https://sis-ext.cn-east-3.myhuaweicloud.com/v1/528c3886649b45ebb28463ce1b9fdb6b/tts",
-    "get_access_token_url": "https://iam.cn-east-3.myhuaweicloud.com/v3/auth/tokens"
+    "aue": ["wav", "mp3", "pcm"],
+    "tts_url":
+        "https://sis-ext.cn-east-3.myhuaweicloud.com/v1/528c3886649b45ebb28463ce1b9fdb6b/tts",
+    "get_access_token_url":
+        "https://iam.cn-east-3.myhuaweicloud.com/v3/auth/tokens"
   },
   "azure": {
-    "speech_list_url": "https://eastus.tts.speech.microsoft.com/cognitiveservices/voices/list",
-    "aue": [
-      "wav",
-      "mp3",
-      "pcm"
-    ],
+    "speech_list_url":
+        "https://eastus.tts.speech.microsoft.com/cognitiveservices/voices/list",
+    "aue": ["wav", "mp3", "pcm"],
     "emotion_category": {
       "Xiaoxiao": {
         "styles_en": [
@@ -523,18 +459,8 @@
           "助理",
           "新闻广播"
         ],
-        "roles_en": [
-          "default",
-          "Narrator",
-          "YoungAdultMale",
-          "Boy"
-        ],
-        "roles_zh": [
-          "默认",
-          "旁白",
-          "青年男性",
-          "男孩"
-        ]
+        "roles_en": ["default", "Narrator", "YoungAdultMale", "Boy"],
+        "roles_zh": ["默认", "旁白", "青年男性", "男孩"]
       },
       "Yunjian": {
         "styles_en": [
@@ -543,12 +469,7 @@
           "sports-commentary",
           "sports-commentary-excited"
         ],
-        "styles_zh": [
-          "默认",
-          "叙述放松",
-          "体育评论",
-          "体育解说激动"
-        ]
+        "styles_zh": ["默认", "叙述放松", "体育评论", "体育解说激动"]
       },
       "Xiaoyi": {
         "styles_en": [
@@ -583,12 +504,7 @@
           "narration-professional",
           "newscast-casual"
         ],
-        "styles_zh": [
-          "默认",
-          "客服",
-          "叙述专业人员",
-          "新闻广播休闲"
-        ]
+        "styles_zh": ["默认", "客服", "叙述专业人员", "新闻广播休闲"]
       },
       "Xiaohan": {
         "styles_en": [
@@ -619,14 +535,8 @@
         ]
       },
       "Xiaomeng": {
-        "styles_en": [
-          "default",
-          "chat"
-        ],
-        "styles_zh": [
-          "默认",
-          "闲聊"
-        ]
+        "styles_en": ["default", "chat"],
+        "styles_zh": ["默认", "闲聊"]
       },
       "Xiaomo": {
         "styles_en": [
@@ -683,30 +593,12 @@
         ]
       },
       "Xiaorui": {
-        "styles_en": [
-          "default",
-          "calm",
-          "fearful",
-          "angry",
-          "sad"
-        ],
-        "styles_zh": [
-          "默认",
-          "平静",
-          "担心",
-          "发怒",
-          "悲哀"
-        ]
+        "styles_en": ["default", "calm", "fearful", "angry", "sad"],
+        "styles_zh": ["默认", "平静", "担心", "发怒", "悲哀"]
       },
       "Xiaoshuang": {
-        "styles_en": [
-          "default",
-          "chat"
-        ],
-        "styles_zh": [
-          "默认",
-          "闲聊"
-        ]
+        "styles_en": ["default", "chat"],
+        "styles_zh": ["默认", "闲聊"]
       },
       "Xiaoxuan": {
         "styles_en": [
@@ -720,17 +612,7 @@
           "gentle",
           "depressed"
         ],
-        "styles_zh": [
-          "默认",
-          "平静",
-          "担心",
-          "愉快",
-          "不满",
-          "严厉",
-          "发怒",
-          "温和",
-          "沮丧"
-        ],
+        "styles_zh": ["默认", "平静", "担心", "愉快", "不满", "严厉", "发怒", "温和", "沮丧"],
         "roles_en": [
           "default",
           "YoungAdultFemale",
@@ -764,15 +646,7 @@
           "sad",
           "serious"
         ],
-        "styles_zh": [
-          "默认",
-          "发怒",
-          "不满",
-          "愉快",
-          "担心",
-          "悲哀",
-          "严厉"
-        ]
+        "styles_zh": ["默认", "发怒", "不满", "愉快", "担心", "悲哀", "严厉"]
       },
       "Yunfeng": {
         "styles_en": [
@@ -785,44 +659,15 @@
           "serious",
           "depressed"
         ],
-        "styles_zh": [
-          "默认",
-          "发怒",
-          "不满",
-          "愉快",
-          "担心",
-          "悲哀",
-          "严厉",
-          "沮丧"
-        ]
+        "styles_zh": ["默认", "发怒", "不满", "愉快", "担心", "悲哀", "严厉", "沮丧"]
       },
       "Yunhao": {
-        "styles_en": [
-          "default",
-          "advertisement-upbeat"
-        ],
-        "styles_zh": [
-          "默认",
-          "广告欢快"
-        ]
+        "styles_en": ["default", "advertisement-upbeat"],
+        "styles_zh": ["默认", "广告欢快"]
       },
       "Yunxia": {
-        "styles_en": [
-          "default",
-          "calm",
-          "fearful",
-          "cheerful",
-          "angry",
-          "sad"
-        ],
-        "styles_zh": [
-          "默认",
-          "平静",
-          "担心",
-          "愉快",
-          "发怒",
-          "悲哀"
-        ]
+        "styles_en": ["default", "calm", "fearful", "cheerful", "angry", "sad"],
+        "styles_zh": ["默认", "平静", "担心", "愉快", "发怒", "悲哀"]
       },
       "Yunye": {
         "styles_en": [
@@ -836,17 +681,7 @@
           "angry",
           "sad"
         ],
-        "styles_zh": [
-          "默认",
-          "尴尬",
-          "平静",
-          "担心",
-          "愉快",
-          "不满",
-          "严厉",
-          "发怒",
-          "悲哀"
-        ],
+        "styles_zh": ["默认", "尴尬", "平静", "担心", "愉快", "不满", "严厉", "发怒", "悲哀"],
         "roles_en": [
           "default",
           "YoungAdultFemale",
@@ -895,16 +730,8 @@
           "沮丧",
           "纪实叙事"
         ],
-        "roles_en": [
-          "default",
-          "OlderAdultMale",
-          "SeniorMale"
-        ],
-        "roles_zh": [
-          "默认",
-          "老年人成年男性",
-          "老年男性"
-        ]
+        "roles_en": ["default", "OlderAdultMale", "SeniorMale"],
+        "roles_zh": ["默认", "老年人成年男性", "老年男性"]
       }
     },
     "voice_number": 36,
@@ -985,6 +812,5 @@
       "zh-TW-HsiaoYuNeural"
     ]
   },
-  "amazon": {
-  }
-}
+  "amazon": {}
+};

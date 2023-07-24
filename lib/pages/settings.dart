@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../net/MyApi.dart';
 import '../config/config.dart';
 import '../utils/utils.dart';
+import 'dart:io' show Platform;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -71,8 +72,20 @@ class _SettingsPageState extends State<SettingsPage> {
     _samplerTextFieldController = TextEditingController(text: '20');
     _picWidthTextFieldController = TextEditingController(text: '512');
     _picHeightTextFieldController = TextEditingController(text: '512');
-    _imageSavePathTextFieldController =
-        TextEditingController(text: 'C:/Users/Administrator/Pictures/');
+    Map<String, String> envVars = Platform.environment;
+    if(Platform.isWindows){
+      if (kDebugMode) {
+        print('当前登录用户名: ${envVars['USERNAME']}');
+      }
+      _imageSavePathTextFieldController =
+          TextEditingController(text: 'C:/Users/Administrator/Pictures/');
+    } else if(Platform.isMacOS){
+      if (kDebugMode) {
+        print('当前登录用户名: ${envVars['USER']}');
+      }
+      _imageSavePathTextFieldController =
+          TextEditingController(text: 'C:/Users/Administrator/Pictures/');
+    }
     loadSettings();
   }
 
@@ -673,7 +686,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             '格式是<lora:lora的名字:lora的权重>,支持多个lora，例如 <lora:fashionGirl_v54:0.5>, <lora:cuteGirlMix4_v10:0.6>',
                                         border: OutlineInputBorder(),
                                         labelText:
-                                            '使用Lora，注意此处使用的Lora将影响所有图片，从上方可用Lora的列表中选择'))),
+                                            '使用Lora，注意此处使用的Lora将影响所有图片，从上方可用Lora的列表中选择，请加入Lora触发词'))),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -762,6 +775,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     setState(() {
                                       _isUseFaceStore = newValue ?? false;
                                     });
+
                                   },
                                 ),
                                 const SizedBox(width: 2),

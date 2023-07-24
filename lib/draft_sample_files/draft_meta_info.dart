@@ -1,4 +1,4 @@
-{
+const Map<String, dynamic> draftMetaInfo ={
   "draft_cloud_capcut_purchase_info": "",
   "draft_cloud_last_action_download": false,
   "draft_cloud_materials": [],
@@ -59,4 +59,4 @@
   "tm_draft_create": 1688290262662724,
   "tm_draft_modified": 1688290264802304,
   "tm_duration": 0
-}
+};

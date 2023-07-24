@@ -1,4 +1,4 @@
-{
+const Map<String, dynamic> presetCharacter ={
   "character_list": [
     "0.无",
     "1.校花",
@@ -36,4 +36,4 @@
     "male, teacher attire, ware glasses, standing in front of the blackboard",
     "1girl, future, scientists, white dress, black hair, detailed depiction of the face, lucy \\(cyberpunk\\), <lora:lucyCyberpunk_35Epochs:0.7>"
   ]
-}
+};
