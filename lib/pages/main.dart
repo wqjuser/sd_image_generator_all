@@ -1,36 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'SettingsPage.dart';
+import 'package:sd_image_generator_all/widgets/article_generator_view.dart';
+import 'package:sd_image_generator_all/widgets/random_generator_view.dart';
+import 'settings.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
-Future<void> main() async {
-
-  //如果size是0，则设置回调，在回调中runApp
-  if(window.physicalSize.isEmpty){
-    print("window size is zero");
-    window.onMetricsChanged = (){
-      //在回调中，size仍然有可能是0
-      if(!window.physicalSize.isEmpty){
-        window.onMetricsChanged = null;
-        print("window onMetricsChanged,run app");
-        runMyApp();
-      }
-    };
-  } else{
-    //如果size非0，则直接runApp
-    print("window load success,run app");
-    runMyApp();
-  }
-}
-
-void runMyApp() async{
-
-  print("window:  ${window.physicalSize.width}  ${window.physicalSize.height}");
-  //需确保加载完成，才runApp
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
   runApp(const MyApp());
 }
 
@@ -60,8 +33,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _setState() {
-    setState(() {});
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    Navigator.pop(context); // 关闭抽屉
   }
 
   @override
@@ -89,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: Drawer(
-        // Populate the Drawer in the next step.
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -101,36 +78,28 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: const Text('文章图片生成器'),
-              onTap: () {
-                // Update the state of the app.
-                // Then close the drawer.
-                Navigator.pop(context);
-              },
+              onTap: () => _onItemTapped(0),
             ),
             ListTile(
               title: const Text('随机图片生成器'),
-              onTap: () {
-                // Update the state of the app.
-                // Then close the drawer.
-                Navigator.pop(context);
-              },
+              onTap: () => _onItemTapped(1),
             ),
           ],
         ),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+      body: _buildBodyContent(),
     );
   }
+
+  Widget _buildBodyContent() {
+    switch (_selectedIndex) {
+      case 0:
+        return const ArticleGeneratorView();
+      case 1:
+        return const RandomGeneratorView();
+      default:
+        return Container(); // 返回一个空的容器作为默认视图
+    }
+  }
 }
+

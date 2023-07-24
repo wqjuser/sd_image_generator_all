@@ -38,6 +38,8 @@ dependencies:
 #  getwidget: ^3.1.1
   dio: ^5.2.1+1
   flash: ^3.0.5+1
+  after_layout: ^1.2.0
+  supabase_flutter: ^1.10.9
 
 dev_dependencies:
   flutter_test:
