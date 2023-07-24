@@ -74,17 +74,14 @@ class _SettingsPageState extends State<SettingsPage> {
     _picHeightTextFieldController = TextEditingController(text: '512');
     Map<String, String> envVars = Platform.environment;
     if(Platform.isWindows){
-      if (kDebugMode) {
-        print('当前登录用户名: ${envVars['USERNAME']}');
-      }
       _imageSavePathTextFieldController =
           TextEditingController(text: 'C:/Users/Administrator/Pictures/');
     } else if(Platform.isMacOS){
-      if (kDebugMode) {
-        print('当前登录用户名: ${envVars['USER']}');
-      }
       _imageSavePathTextFieldController =
-          TextEditingController(text: 'C:/Users/Administrator/Pictures/');
+          TextEditingController(text: '/Users/${envVars['USER']}/Pictures/');
+    }else {
+      _imageSavePathTextFieldController =
+          TextEditingController(text: '非电脑设备，无法保存图片');
     }
     loadSettings();
   }
