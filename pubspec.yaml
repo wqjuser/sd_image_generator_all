@@ -41,6 +41,9 @@ dependencies:
   after_layout: ^1.2.0
   supabase_flutter: ^1.10.9
   extended_image: ^8.0.2
+  dart_openai: ^4.0.0
+  window_manager: ^0.3.5
+  quiver: ^3.2.1
 
 dev_dependencies:
   flutter_test:

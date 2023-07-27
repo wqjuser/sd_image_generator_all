@@ -46,6 +46,7 @@ class MyApi extends ApiBase {
     return get(url);
   }
 
+  // 获取采样算法
   Future<Response> getSDSamplers(String sdUrl) {
     var url = sdUrl;
     if (url.endsWith('/')) {
@@ -55,6 +56,7 @@ class MyApi extends ApiBase {
     }
     return get(url);
   }
+
   // 获取高清修复算法
   Future<Response> getSDUpscalers(String sdUrl) {
     var url = sdUrl;
@@ -65,6 +67,7 @@ class MyApi extends ApiBase {
     }
     return get(url);
   }
+
   // 获取高清修复latent-upscale算法
   Future<Response> getSDlLatentUpscaleModes(String sdUrl) {
     var url = sdUrl;
@@ -75,9 +78,9 @@ class MyApi extends ApiBase {
     }
     return get(url);
   }
-  // 图生图接口
-  Future<Response> sdText2Image(
-      String sdUrl, Map<String, dynamic> requestBody) {
+
+  // 文生图接口
+  Future<Response> sdText2Image(String sdUrl, Map<String, dynamic> requestBody) {
     var url = sdUrl;
     if (url.endsWith('/')) {
       url = '${url}sdapi/v1/txt2img';
@@ -85,5 +88,44 @@ class MyApi extends ApiBase {
       url = '$url/sdapi/v1/txt2img';
     }
     return post(url, requestBody);
+  }
+
+  // 图生图接口
+  Future<Response> sdImage2Image(String sdUrl, Map<String, dynamic> requestBody) {
+    var url = sdUrl;
+    if (url.endsWith('/')) {
+      url = '${url}sdapi/v1/img2img';
+    } else {
+      url = '$url/sdapi/v1/img2img';
+    }
+    return post(url, requestBody);
+  }
+
+  // SD设置参数，一般用来修改模型
+  Future<Response> sdOptions(String sdUrl, Map<String, dynamic> requestBody) {
+    var url = sdUrl;
+    if (url.endsWith('/')) {
+      url = '${url}sdapi/v1/options';
+    } else {
+      url = '$url/sdapi/v1/options';
+    }
+    return post(url, requestBody);
+  }
+
+  // 用于测试gpt接口是否可用
+  Future<Response> testChatGPT(String apiKey) {
+    var url = "https://youraihelper.xyz/v1/chat/completions";
+    Options options = Options(headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $apiKey',
+    });
+    Map<String, dynamic> requestBody = {
+      "model": "gpt-3.5-turbo-0613",
+      "messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "你好"}
+      ]
+    };
+    return post(url, requestBody, options);
   }
 }

@@ -12,43 +12,55 @@ class ImageView extends StatelessWidget {
 
     if (imageCount == 1) {
       return Center(
+          child: Padding(
+        padding: const EdgeInsets.all(5.0),
         child: Image.memory(
           base64Decode(imageBase64List[0]),
         ),
-      );
+      ));
     } else if (imageCount == 2) {
       return Row(
         children: [
           Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Image.memory(
               base64Decode(imageBase64List[0]),
             ),
-          ),
+          )),
           Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Image.memory(
               base64Decode(imageBase64List[1]),
             ),
-          ),
+          )),
         ],
       );
     } else if (imageCount == 3) {
       return Row(
         children: [
           Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Image.memory(
               base64Decode(imageBase64List[0]),
             ),
-          ),
+          )),
           Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Image.memory(
               base64Decode(imageBase64List[1]),
             ),
-          ),
+          )),
           Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Image.memory(
               base64Decode(imageBase64List[2]),
             ),
-          ),
+          )),
         ],
       );
     } else if (imageCount == 4) {
@@ -57,29 +69,37 @@ class ImageView extends StatelessWidget {
           Row(
             children: [
               Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Image.memory(
                   base64Decode(imageBase64List[0]),
                 ),
-              ),
+              )),
               Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Image.memory(
                   base64Decode(imageBase64List[1]),
                 ),
-              ),
+              )),
             ],
           ),
           Row(
             children: [
               Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Image.memory(
                   base64Decode(imageBase64List[2]),
                 ),
-              ),
+              )),
               Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Image.memory(
                   base64Decode(imageBase64List[3]),
                 ),
-              ),
+              )),
             ],
           ),
         ],
@@ -94,10 +114,12 @@ class ImageView extends StatelessWidget {
         for (int j = i * 3; j < (i * 3) + 3 && j < imageCount; j++) {
           rowChildren.add(
             Expanded(
+                child: Padding(
+              padding: const EdgeInsets.all(5.0),
               child: Image.memory(
                 base64Decode(imageBase64List[j]),
               ),
-            ),
+            )),
           );
         }
 

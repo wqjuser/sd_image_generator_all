@@ -1,10 +1,37 @@
 const Map<String, dynamic> prompts = {
   "real_person_negative_prompt":
-      "Paintings, sketches, negative_hand-neg, (worst quality:2), (low quality:2), (normal quality:2), (deformed iris, deformed pupils, bad eyes, semi-realistic:1.4), (bad-image-v2-39000, bad_prompt_version2, bad-hands-5, EasyNegative, ng_deepnegative_v1_75t), (worst quality, low quality:1.3), (blurry:1.2), (greyscale, monochrome:1.1), nose, cropped, lowres, text, jpeg artifacts, signature, watermark, username, blurry, artist name, trademark, watermark, title, (tan, muscular, child, infant, toddlers, chibi, sd character:1.1), multiple view, Reference sheet, long neck, lowers, normal quality, ((monochrome)), ((grayscales)), skin spots, acnes, skin blemishes, age spot, glans, (6 more fingers on one hand), (deformity), multiple breasts, (mutated hands and fingers:1.5 ), (long body :1.3), (mutation, poorly drawn :1.2), bad anatomy, liquid body, liquid tongue, disfigured, malformed, mutated, anatomical nonsense, text font ui, error, malformed hands, long neck, blurred, lowers, lowres, bad anatomy, bad proportions, bad shadow, uncoordinated body, unnatural body, fused breasts, bad breasts, huge breasts, poorly drawn breasts, extra breasts, liquid breasts, heavy breasts, missing breasts, huge haunch, huge thighs, huge calf, bad hands, fused hand, missing hand, disappearing arms, disappearing thigh, disappearing calf, disappearing legs, fused ears, bad ears, poorly drawn ears, extra ears, liquid ears, heavy ears, missing ears, fused animal ears, bad animal ears, poorly drawn animal ears, extra animal ears, liquid animal ears, heavy animal ears, missing animal ears, text, ui, error, missing fingers, missing limb, fused fingers, one hand with more than 5 fingers, one hand with less than 5 fingers, one hand with more than 5 digit, one hand with less than 5 digit, extra digit, fewer digits, fused digit, missing digit, bad digit, liquid digit, colorful tongue, black tongue, cropped, watermark, username, blurry, JPEG artifacts, signature, 3D, 3D game, 3D game scene, 3D character, malformed feet, extra feet, bad feet, poorly drawn feet, fused feet, missing feet, extra shoes, bad shoes, fused shoes, more than two shoes, poorly drawn shoes, bad gloves, poorly drawn gloves, fused gloves, bad hairs, poorly drawn hairs, fused hairs, big muscles, ugly, bad face, fused face, poorly drawn face, cloned face, big face, long face, bad eyes, fused eyes poorly drawn eyes, extra eyes, malformed limbs, more than 2 nipples, missing nipples, different nipples, fused nipples, bad nipples, poorly drawn nipples, black nipples, colorful nipples, gross proportions. short arm, (((missing arms))), missing thighs, missing calf, missing legs, mutation, duplicate, morbid, mutilated, poorly drawn hands, more than 1 left hand, more than 1 right hand, deformed, (blurry), disfigured, missing legs, extra arms, extra thighs, more than 2 thighs, extra calf, fused calf, extra legs, bad knee, extra knee, more than 2 legs, bad tails, bad mouth, fused mouth, poorly drawn mouth, bad tongue, tongue within mouth, too long tongue, black tongue, big mouth, cracked mouth, bad mouth, dirty face, dirty teeth, dirty pantie, fused pantie, poorly drawn pantie, fused cloth, poorly drawn cloth, bad pantie, yellow teeth, thick lips",
+      "Paintings, sketches, negative_hand-neg, (worst quality:2), (low quality:2), (normal quality:2), (deformed iris, deformed pupils, bad eyes, semi-realistic:1.4), "
+          "(bad-image-v2-39000, bad_prompt_version2, bad-hands-5, EasyNegative, ng_deepnegative_v1_75t), (worst quality, low quality:1.3), (blurry:1.2),"
+          " (greyscale, monochrome:1.1), nose, cropped, lowres, text, jpeg artifacts, signature, watermark, username, blurry, artist name, trademark, watermark, title,"
+          " (tan, muscular, child, infant, toddlers, chibi, sd character:1.1), multiple view, Reference sheet, long neck, lowers, normal quality, ((monochrome)), ((grayscales)),"
+          " skin spots, acnes, skin blemishes, age spot, glans, (6 more fingers on one hand), (deformity), multiple breasts, (mutated hands and fingers:1.5 ), (long body :1.3),"
+          " (mutation, poorly drawn :1.2), bad anatomy, liquid body, liquid tongue, disfigured, malformed, mutated, anatomical nonsense, text font ui, error, malformed hands, "
+          "long neck, blurred, lowers, lowres, bad anatomy, bad proportions, bad shadow, uncoordinated body, unnatural body, fused breasts, bad breasts, huge breasts, poorly "
+          "drawn breasts, extra breasts, liquid breasts, heavy breasts, missing breasts, huge haunch, huge thighs, huge calf, bad hands, fused hand, missing hand, "
+          "disappearing arms, disappearing thigh, disappearing calf, disappearing legs, fused ears, bad ears, poorly drawn ears, extra ears, liquid ears, heavy ears, "
+          "missing ears, fused animal ears, bad animal ears, poorly drawn animal ears, extra animal ears, liquid animal ears, heavy animal ears, missing animal ears, text, ui, "
+          "error, missing fingers, missing limb, fused fingers, one hand with more than 5 fingers, one hand with less than 5 fingers, one hand with more than 5 digit, "
+          "one hand with less than 5 digit, extra digit, fewer digits, fused digit, missing digit, bad digit, liquid digit, colorful tongue, black tongue, cropped, watermark, "
+          "username, blurry, JPEG artifacts, signature, 3D, 3D game, 3D game scene, 3D character, malformed feet, extra feet, bad feet, poorly drawn feet, fused feet, "
+          "missing feet, extra shoes, bad shoes, fused shoes, more than two shoes, poorly drawn shoes, bad gloves, poorly drawn gloves, fused gloves, bad hairs, "
+          "poorly drawn hairs, fused hairs, big muscles, ugly, bad face, fused face, poorly drawn face, cloned face, big face, long face, bad eyes, fused eyes poorly drawn eyes,"
+          " extra eyes, malformed limbs, more than 2 nipples, missing nipples, different nipples, fused nipples, bad nipples, poorly drawn nipples, black nipples, colorful nipples, "
+          "gross proportions. short arm, (((missing arms))), missing thighs, missing calf, missing legs, mutation, duplicate, morbid, mutilated, poorly drawn hands,"
+          " more than 1 left hand, more than 1 right hand, deformed, (blurry), disfigured, missing legs, extra arms, extra thighs, more than 2 thighs, extra calf, fused calf, "
+          "extra legs, bad knee, extra knee, more than 2 legs, bad tails, bad mouth, fused mouth, poorly drawn mouth, bad tongue, tongue within mouth, too long tongue, black tongue, "
+          "big mouth, cracked mouth, bad mouth, dirty face, dirty teeth, dirty pantie, fused pantie, poorly drawn pantie, fused cloth, poorly drawn cloth, bad pantie, yellow teeth,"
+          " thick lips",
   "anime_negative_prompt":
-      "(simple background:1.35), lowres, long neck, out of frame, extra fingers, mutated hands, monochrome, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, glitchy, bokeh, (((long neck))), ((flat chested)), ((((visible hand)))), ((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck))) red eyes, multiple subjects, extra headsbad-image-v2-39000, bad_prompt_version2, bad-hands-5, EasyNegative, ng_deepnegative_v1_75t, bad-artist-anime:0.7,  negative_hand-neg",
+      "(simple background:1.35), lowres, long neck, out of frame, extra fingers, mutated hands, monochrome, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))),"
+          " (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, glitchy, bokeh, (((long neck))), ((flat chested)), "
+          "((((visible hand)))), ((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), "
+          "((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), "
+          "out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), "
+          "mutated hands, (fused fingers), (too many fingers), (((long neck))) red eyes, multiple subjects, extra headsbad-image-v2-39000, bad_prompt_version2, bad-hands-5, "
+          "EasyNegative, ng_deepnegative_v1_75t, bad-artist-anime:0.7,  negative_hand-neg",
   "default_prompt":
-      "(8k, best quality, masterpiece:1.2), best quality, official art, highres, extremely detailed CG unity 8k wallpaper, extremely detailed,incredibly absurdres, highly detailed, absurdres, 8k resolution, exquisite facial features, huge filesize, ultra-detailed",
+      "(8k, best quality, masterpiece:1.2), best quality, official art, highres, extremely detailed CG unity 8k wallpaper, extremely detailed,incredibly absurdres, highly "
+          "detailed, absurdres, 8k resolution, exquisite facial features, huge filesize, ultra-detailed, ",
   "camera_perspective_prompts": [
     "Depth of field",
     "Panorama",
@@ -278,14 +305,7 @@ const Map<String, dynamic> prompts = {
       "mole under mouth",
       ":3"
     ],
-    [
-      "fake animal ears",
-      "cat ears",
-      "dog ears",
-      "fox ears",
-      "bunny ears",
-      "bear ears"
-    ],
+    ["fake animal ears", "cat ears", "dog ears", "fox ears", "bunny ears", "bear ears"],
     ["fangs", "canine teeth"]
   ],
   "expression_prompts": [
@@ -357,15 +377,7 @@ const Map<String, dynamic> prompts = {
       "multicolored hair",
       "rainbow-like hair"
     ],
-    [
-      "bangs",
-      "crossed bang",
-      "hair between eye",
-      "blunt bangs",
-      "diagonal bangs",
-      "asymmetrical bangs",
-      "braided bangs"
-    ],
+    ["bangs", "crossed bang", "hair between eye", "blunt bangs", "diagonal bangs", "asymmetrical bangs", "braided bangs"],
     [
       "short ponytail",
       "side ponytail",
@@ -523,15 +535,7 @@ const Map<String, dynamic> prompts = {
       "overcoat",
       "duffel coat"
     ],
-    [
-      "denim shorts",
-      "pleated skirt",
-      "short shorts",
-      "pencil skirt",
-      "leather skirt",
-      "black leggings",
-      "skirt under kimono"
-    ]
+    ["denim shorts", "pleated skirt", "short shorts", "pencil skirt", "leather skirt", "black leggings", "skirt under kimono"]
   ],
   "clothes_prompts2": [
     "transparent clothes",
@@ -703,34 +707,8 @@ const Map<String, dynamic> prompts = {
     "looking to the side"
   ],
   "environment_prompts": [
-    [
-      "in spring",
-      "in summer",
-      "in autumn",
-      "in winter",
-      "dusk",
-      "night",
-      "(autumn maple forest:1.3)",
-      "(very few fallen leaves), (path)",
-      "day"
-    ],
-    [
-      "sun",
-      "sunset",
-      "moon",
-      "full_moon",
-      "stars",
-      "sky",
-      "cloudy",
-      "rain",
-      "snow",
-      "ice",
-      "snowflakes",
-      "lighting",
-      "rainbow",
-      "meteor shower",
-      "universe"
-    ],
+    ["in spring", "in summer", "in autumn", "in winter", "dusk", "night", "(autumn maple forest:1.3)", "(very few fallen leaves), (path)", "day"],
+    ["sun", "sunset", "moon", "full_moon", "stars", "sky", "cloudy", "rain", "snow", "ice", "snowflakes", "lighting", "rainbow", "meteor shower", "universe"],
     [
       "sea",
       "hills",

@@ -14,9 +14,9 @@ class ApiBase {
     }
   }
 
-  Future<Response> post(String url, dynamic data) async {
+  Future<Response> post(String url, dynamic data, [Options? options]) async {
     try {
-      final response = await _dio.post(url, data: data);
+      final response = await _dio.post(url, data: data, options: options);
       return response;
     } catch (e) {
       throw _handleError(e);
